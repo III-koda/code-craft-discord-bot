@@ -1,4 +1,4 @@
-from src.discbot.run_code_controller import *
+from src.discbot.controllers.run_code_controller import *
 
 
 def test_check_input():
@@ -13,7 +13,7 @@ def test_check_input():
 
 
 def test_execute_code():
-    assert execute_code("python3", 'print("hello")') == CodeExecutionResponse(
+    assert execute_code("python", 'print("hello")') == CodeExecutionResponse(
         stdout="hello\n", stderr="", exitcode=0, timeout=False
     )
 

@@ -4,9 +4,9 @@ import discord
 from discord.ext import commands
 
 from src.config import DISCORD_BOT_TOKEN
-from src.discbot.joke_controller import joke_generator
-from src.discbot.run_code_controller import check_input
-from src.discbot.run_code_controller import execute_code
+from src.discbot.controllers.joke_controller import joke_generator
+from src.discbot.controllers.run_code_controller import check_input
+from src.discbot.controllers.run_code_controller import execute_code
 
 
 _LOGGER = logging.getLogger(__name__)

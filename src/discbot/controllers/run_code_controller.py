@@ -1,3 +1,4 @@
+import logging
 from dataclasses import dataclass
 from typing import List
 from typing import Optional
@@ -6,6 +7,8 @@ import requests
 
 from src.config import EXECUTE_API_URL
 from src.config import LANG_API_URL
+
+_LOGGER = logging.getLogger(__name__)
 
 
 @dataclass
@@ -24,6 +27,7 @@ def execute_code(language: str, code: str) -> Optional[CodeExecutionResponse]:
 
     r = requests.post(EXECUTE_API_URL, data=pload)
     if r.status_code != 200:
+        _LOGGER.error(f"Execute code request returned error:\n{r.content}")
         return None
     respond = r.json()
     return CodeExecutionResponse(
