@@ -1,6 +1,6 @@
 from random import randint
 
-from data.jokes import JOKES
+from static_data.jokes import JOKES
 
 
 def joke_generator():
