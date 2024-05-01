@@ -1,5 +1,4 @@
-from discord.ext import commands
+from src.config import DISCORD_BOT_TOKEN
+from src.discbot.bot import bot
 
-bot = commands.Bot(command_prefix=".")
-
-bot.load_extension("src.discbot.bot")
+bot.run(DISCORD_BOT_TOKEN)

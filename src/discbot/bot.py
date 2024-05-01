@@ -3,7 +3,7 @@ import logging
 import discord
 from discord.ext import commands
 
-from src.config import DISCORD_BOT_TOKEN
+from src.discbot.controllers.api_controller import api_handler
 from src.discbot.controllers.joke_controller import joke_generator
 from src.discbot.controllers.run_code_controller import check_input
 from src.discbot.controllers.run_code_controller import execute_code
@@ -12,12 +12,17 @@ from src.discbot.controllers.run_code_controller import execute_code
 _LOGGER = logging.getLogger(__name__)
 
 intents = discord.Intents.default()
+intents.message_content = True
+intents.members = True
+
 bot = commands.Bot(command_prefix=".", intents=intents)
 
 
 @bot.event
 async def on_ready():
-    _LOGGER.info("Bot is ready")
+    print(f"{bot.user} has connected to Discord! Version {discord.__version__}")
+
+    await bot.tree.sync()
 
 
 @bot.command()
@@ -28,8 +33,6 @@ async def run_code(ctx, language, *, code):
         return
     language = language.strip("```")
     code = code.strip("```")
-    _LOGGER.error(language)
-    _LOGGER.error(code)
 
     result = execute_code(language, code)
     if result is None:
@@ -39,9 +42,15 @@ async def run_code(ctx, language, *, code):
     await ctx.send(msg_str)
 
 
-@bot.command()
+@bot.hybrid_command(description="Randon dev joke")
 async def joke(ctx):
     await ctx.send(joke_generator())
 
 
-bot.run(DISCORD_BOT_TOKEN)
+@bot.hybrid_command(description="execute an API to JSON format")
+async def api(ctx, method, *, url):
+    result = api_handler(method, url)
+
+    if result is None:
+        result = "Sumthing went wrong!"
+    await ctx.send(result)
